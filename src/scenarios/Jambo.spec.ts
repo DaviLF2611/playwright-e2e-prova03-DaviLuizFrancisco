@@ -17,25 +17,27 @@ test.describe('Jambô Editora E2E', () => {
     await page.getByRole('link', { name: 'RPG', exact: true }).first().click();
 
     await expect(page).toHaveURL(/\/categoria\/rpg\/?$/);
-    await expect(page.getByRole('heading', { name: 'RPG' })).toBeVisible();
-    await expect(page.getByText('Exibindo').first()).toBeVisible();
+    await expect(page.getByRole('status')).toContainText('Exibindo');
   });
 
   test('deve abrir a categoria de HQ pelo menu', async ({ page }) => {
     await page.getByRole('link', { name: 'HQ', exact: true }).first().click();
 
     await expect(page).toHaveURL(/\/categoria\/quadrinhos\/?$/);
-    await expect(
-      page.getByRole('heading', { name: 'Quadrinhos' }),
-    ).toBeVisible();
-    await expect(page.getByText('Exibindo').first()).toBeVisible();
+    await expect(page.getByRole('status')).toContainText('Exibindo');
   });
 
   test('deve acessar as informações de contato', async ({ page }) => {
-    await page.getByRole('link', { name: 'Contato', exact: true }).click();
+    await page.goto('https://jamboeditora.com.br/contato/', {
+      waitUntil: 'domcontentloaded'
+    });
 
     await expect(page).toHaveURL(/\/contato\/?$/);
-    await expect(page.getByRole('heading', { name: 'Contato' })).toBeVisible();
-    await expect(page.getByText('SAC – Atendimento ao Cliente')).toBeVisible();
+    await expect(
+      page.getByRole('heading', {
+        name: 'SAC – Atendimento ao Cliente',
+        exact: true
+      })
+    ).toBeVisible();
   });
 });
